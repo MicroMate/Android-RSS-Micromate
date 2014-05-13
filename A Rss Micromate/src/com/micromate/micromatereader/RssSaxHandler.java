@@ -61,8 +61,7 @@ public class RssSaxHandler extends DefaultHandler {
 			throws SAXException {
 		// TODO Auto-generated method stub
 		super.characters(ch, start, length);
-		
-		//tu mozna zrobic warunki dla znacznik—w zeby nie pobiera¸o znak—w w kazdym znaczniku - moze to przyspieszy pobieranie , ale trzeba sprawdzic
+	
 		//if (inItem == true)
 		if(currentElement) {
 			builderText.append(ch, start, length);     //
@@ -90,9 +89,11 @@ public class RssSaxHandler extends DefaultHandler {
 			else if(localName.equalsIgnoreCase("link"))
 				article.setUrl(builderText.toString().trim());
 			else if(localName.equalsIgnoreCase("description"))
-        	article.setDescription(builderText.toString().trim());
-			 else if(localName.equals("pubDate"))
+				article.setDescription(builderText.toString().trim());
+			else if(localName.equals("pubDate"))
 				article.setPubDate(builderText.toString());
+			else if(localName.equals("category"))
+				article.setCategory(builderText.toString());
 		
 			else if(localName.equalsIgnoreCase("item")) {  //
 				articles.add(article);

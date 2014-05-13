@@ -26,7 +26,7 @@ public class ArticleActivity extends Activity {
 		final Intent intent = getIntent();
 		feedTitle.setText(intent.getStringExtra("feedTitle"));
 		articleTitle.setText(intent.getStringExtra("articleTitle"));
-		articleContent.setText(intent.getStringExtra("articleContent"));
+		articleContent.setText(intent.getStringExtra("articleCategory"));
 			
 		
 		btnArticleUrl.setOnClickListener(new OnClickListener() {

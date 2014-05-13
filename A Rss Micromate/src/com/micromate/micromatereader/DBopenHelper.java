@@ -13,13 +13,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-// rozszerzenie kolasy o klase SQLiteOpenHelper (OpenHelper jest klasa pochodna)
 // SQLiteOpenHelper - sluzy do konfigurowania baz i otwierania polaczen
-
 public class DBopenHelper extends SQLiteOpenHelper{
 
-	//Wersja Bazy Danych                                        FINAL  ??????????
-	  private static final int WERSJA_BAZY = 1;
+	  //Wersja Bazy Danych                                    
+	  private static final int WERSJA_BAZY = 2;
 
 	
 	  //Nazwa Bazy Danych
@@ -34,6 +32,7 @@ public class DBopenHelper extends SQLiteOpenHelper{
 	  public static final String NAZWA_KOLUMNY_DESCRIPTION = "description";   		 
 	  public static final String NAZWA_KOLUMNY_URL = "url";  
 	  public static final String NAZWA_KOLUMNY_PUBDATE = "pubDate";  
+	  public static final String NAZWA_KOLUMNY_CATEGORY = "category";  
 	  
 
 	  // Database creation sql statement
@@ -43,7 +42,8 @@ public class DBopenHelper extends SQLiteOpenHelper{
 	      NAZWA_KOLUMNY_TITLE + " text not null," +
 	      NAZWA_KOLUMNY_DESCRIPTION + " text not null," +
 	      NAZWA_KOLUMNY_URL + " text not null," + 
-	      NAZWA_KOLUMNY_PUBDATE + " text not null);";
+	      NAZWA_KOLUMNY_PUBDATE + " text not null," +
+	      NAZWA_KOLUMNY_CATEGORY + " text not null);";
 
 	  
 	  //W konstruktorze podajemy NAZWE i WERSJE bazy oraz WYWOLUJEMY konstuktor klasy nadrzednej 

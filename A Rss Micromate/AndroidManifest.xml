@@ -7,8 +7,8 @@
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="18" />
-    
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -24,12 +24,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity 
+        <activity
             android:name="com.micromate.micromatereader.ArticleActivity"
             android:label="@string/app_name" >
         </activity>
-        
+        <activity
+            android:name="com.micromate.micromatereader.ArticlesListActivity"
+            android:label="@string/title_activity_articles_list" >
+        </activity>
     </application>
 
 </manifest>

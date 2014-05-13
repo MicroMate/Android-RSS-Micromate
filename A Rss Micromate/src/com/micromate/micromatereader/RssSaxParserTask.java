@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>> {
 
-	ArticleListAdapter articleListAdapter;
+	ArticlesListAdapter articleListAdapter;
 	DBoperacje baza;
 	List<Article> articles;
 	RssSaxHandler rssSaxHandler;
@@ -29,7 +29,7 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 	
 	//Konstruktor
 	public RssSaxParserTask( 
-			ArticleListAdapter articleListAdapter, 
+			ArticlesListAdapter articleListAdapter, 
 			DBoperacje baza,
 			MyDialogFragment dialogPobierz,
 			FragmentActivity activity) {
@@ -54,7 +54,7 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
   
 		articles = new ArrayList<Article>(); 
 		
-		//to jest dla manifestu w metodei onPostExecute - sprawdzam czy zosta¸y pobrane dane
+		//to jest dla manifestu w metoda onPostExecute - sprawdzam czy zosta¸y pobrane dane
 		//z null tez dzial ale ¸atwiej i w¸asciwie uzyc metode isEmty()
 		//articles = null;               //LISTA DOMYSLNIE NIE JEST null jest PUSTA, znajdujace sie w niej elemnty sa null
  
@@ -63,7 +63,7 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 				
 				articles = parseXml(urls[0]); 
 				
-				publishProgress((int) (((i+1) / (float) urls.length) * 100));     //OKNO DIALOGOWE 4  aktualizowanie pasku postepu      // 3
+				publishProgress((int) (((i+1) / (float) urls.length) * 100));  //aktualizowanie pasku postepu 
       
 	  
 			} catch (ParserConfigurationException pce){
@@ -80,7 +80,7 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 		return articles;
 	}
 
-	//OKNO DIALOGOWE 5  - wywo¸anie metody publishProgress - prowadzi do wywolania metody onProgressUpdate
+	//Wywo¸anie metody publishProgress - prowadzi do wywolania metody onProgressUpdate
 	//przyjmuje argumentu typu integer (mozna tez zastosowac typ String)
 	@Override
 	protected void onProgressUpdate(Integer... values) {          
@@ -140,18 +140,18 @@ private void aktualizacjaBazy(List<Article> articles) {
 	baza.deleteAll();
 	
 	for (Article article : articles)
-		baza.addToDatabase(new Article(article.getTitle(),article.getDescription(), article.getUrl(), article.getPubDate()));
+		baza.addToDatabase(new Article(
+				article.getTitle(),
+				article.getDescription(), 
+				article.getUrl(), 
+				article.getPubDate(), 
+				article.getCategory()));
 	    
 }
 
 private void aktualizacjaAdaptera() {
-
-	//Tak jest ZLE nie aktualizuje listy
-	//articles.clear();
-	//articles = new ArrayList<Article>();
-	//articles = baza.getAllContacts(); //Pobranie z bazy artyku¸—w	
 		  		    
-	//Gdy uzywamy wlasny adapter tak wyglada poprawna aktualizacja listy
+	//Dla wlasnego adaptera - aktualizacja listy
 	articleListAdapter.clear();
 	articleListAdapter.addAll(baza.getAllData());
 	articleListAdapter.notifyDataSetChanged();

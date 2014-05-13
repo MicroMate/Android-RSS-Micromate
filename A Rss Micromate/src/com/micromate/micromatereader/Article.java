@@ -16,12 +16,14 @@ public class Article {
 	//private URL url;
 	private String url;
 	private String pubDate;
+	private String category;
 	
-	public Article(String title, String description, String url, String pupDate) {
+	public Article(String title, String description, String url, String pupDate, String category) {
 		this.title = title;
 		this.description = description;
 		this.url = url;
 		this.pubDate = pupDate;
+		this.category = category;
 	}
 	
 	public Article() {
@@ -69,6 +71,14 @@ public class Article {
 		this.pubDate = pubDate;
 	}
 	
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
 	//Formatowanie Daty i Godziny
 	public String getDate() {
 		//wzor daty z pliku xml
@@ -92,15 +102,5 @@ public class Article {
 	}
 	
 	
-	/*
-	//metoda konwertuje typ String do URL
-	public void parseToUrl(String str) {
-	    try {
-	        url = new URL(str);
-	    } catch (MalformedURLException e) {
-	        e.printStackTrace();
-	    }
-	 }
-	 */
 	
 }
