@@ -9,20 +9,18 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class ArticlesListActivity extends FragmentActivity {
 
-	private Button uaktualnijBazeButton; 
 	private	ListView listView;	
 	private List<Article> articles; 
 	private ArticlesListAdapter articleListAdapter;   
 	private DBoperacje baza;
-	private RssSaxParserTask rssSaxParserTask;	
-	private MyDialogFragment dialogPobierz;
 	private Intent intent;
 	private String category;
+	private TextView categoryTextView;
 	
 		
 	@Override
@@ -31,18 +29,17 @@ public class ArticlesListActivity extends FragmentActivity {
 		setContentView(R.layout.activity_articles_list);
 		
 		listView = (ListView)findViewById(R.id.listView1);
-		uaktualnijBazeButton = (Button)findViewById(R.id.button1);
-		//TextView title = (TextView)findViewById(R.id.textView2); 
-		//title.setText(myRSSHandler.getChannelTitle()); 
+		categoryTextView = (TextView)findViewById(R.id.textView1); 
 		
 		articles = new ArrayList<Article>();
 		baza = new DBoperacje(this);   //BAZA DANYCH
-		dialogPobierz = new MyDialogFragment();
-		
+	
 		//odebranie danej z nadrzednej aktywnosci
 		intent = getIntent();
 	    category = intent.getStringExtra("category");
 		
+	    categoryTextView.setText(category);
+	    
 		baza.open(); 	
 		
 		if (category.equals("All"))
@@ -50,24 +47,10 @@ public class ArticlesListActivity extends FragmentActivity {
 		else 
 			pobierzCategoryData();
 			
-			
-		//AKTUALIZACJA LISTY	
-		uaktualnijBazeButton.setOnClickListener(new View.OnClickListener() {   
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-							
-				String url = "http://www.micromate.bl.ee/?feed=rss2";
-				
-				rssSaxParserTask = new RssSaxParserTask(articleListAdapter, baza, dialogPobierz, ArticlesListActivity.this);
-				rssSaxParserTask.execute(url,url,url,url,url,url,url,url,url,url); //jest 10, wiec po 10%	
-			}
-		});
-		
 		
 		//WYBIERANIE POZYCJI Z LISTY
 		listView.setOnItemClickListener(new OnItemClickListener() {   
-
+ 
 		        @Override
 		        public void onItemClick(AdapterView<?> arg0, View v, int pos, long id) {
 		        	
@@ -112,7 +95,7 @@ public class ArticlesListActivity extends FragmentActivity {
 	  private void pobierzCategoryData() {
 		     
 			articles = baza.getCategory(category); //POBIERANIE ARTICLES z BAZY DANYCH
-		    
+				    
 		    articleListAdapter = new ArticlesListAdapter(this, R.layout.activity_articles_list, articles);
 			listView.setAdapter(articleListAdapter);
 		

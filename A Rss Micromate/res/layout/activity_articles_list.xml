@@ -7,10 +7,12 @@
 
     <ListView
         android:id="@+id/listView1"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/button1" >
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/textView1" >
 
     </ListView>
 
@@ -24,13 +26,16 @@
         android:scaleType="fitXY"
         android:src="@drawable/rss_reader_banner" />
 
-    <Button
-        android:id="@+id/button1"
+    <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/imageView1"
-        android:text="Button" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="@string/category_text_view"
+        android:textColor="#BBBBBB"
+        android:textSize="21sp" 
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>

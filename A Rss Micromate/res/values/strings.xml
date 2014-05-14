@@ -6,4 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_articles_list">ArticlesListActivity</string>
 
+    <string name="update_articles">Update Articles</string>
+    <string name="category_text_view">Category</string>
+    
 </resources>

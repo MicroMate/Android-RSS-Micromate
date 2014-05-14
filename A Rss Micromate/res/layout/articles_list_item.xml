@@ -4,12 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
  
-    <TextView
+    <TextView 
         android:id="@+id/title"
+        android:paddingTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:paddingLeft="5dp"
+        android:textSize="20sp"       
+        android:gravity="center" 
         android:textColor="#F26522">
     </TextView>
  
@@ -17,10 +18,10 @@
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-       
-        android:textSize="12sp"
-        android:paddingLeft="5dp"
-        android:textColor="#FFFFFF">
+        android:textSize="12sp"       
+        android:gravity="center_horizontal" 
+        android:textColor="#BBBBBB"
+        android:paddingBottom="10dp">
     </TextView>
 
 </LinearLayout>

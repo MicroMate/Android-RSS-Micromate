@@ -1,7 +1,9 @@
 package com.micromate.micromatereader;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -92,7 +94,7 @@ public class DBoperacje {
         return lista;
     }
     
-    // Getting category
+    // Getting article where category
     public List<Article> getCategory(String category) {
        
     	List<Article> lista = new ArrayList<Article>();
@@ -127,6 +129,37 @@ public class DBoperacje {
         // return contact list
         return lista;
     }
+    
+    // Getting Categories by Articles
+    public Set<String> getCategoryColumn() {
+       
+    	Set<String> lista = new HashSet<String>();  //HashSet Nie dubluje element—w
+             
+        // Select All Query      
+        String selectQuery = "SELECT category FROM " + DBopenHelper.NAZWA_TABELI;
+        Cursor kursor = db.rawQuery(selectQuery, null);
+        		
+        // looping through all rows and adding to list
+        if (kursor.moveToFirst()) {
+            do {
+                //Article wynik = new Article();
+            	String category;
+                
+                //pobieranie danych z bazy danych
+                category = kursor.getString(0);
+                
+                // Adding contact to list
+                lista.add(category);
+                
+            } while (kursor.moveToNext());
+        }
+ 
+        kursor.close();
+        // return contact list
+        return lista;
+    }
+    
+    
     
     /* Usuwanie poprawic
     public boolean deleteCountry(long _index) {

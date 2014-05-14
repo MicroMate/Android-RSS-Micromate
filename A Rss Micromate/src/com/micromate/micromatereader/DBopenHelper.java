@@ -21,10 +21,10 @@ public class DBopenHelper extends SQLiteOpenHelper{
 
 	
 	  //Nazwa Bazy Danych
-	  private static final String NAZWA_BAZY = "BazaAndReader.db";
+	  private static final String NAZWA_BAZY = "micromate_rss.db";
 
 	  //Nazwa tablicy
-	  public static final String NAZWA_TABELI = "wynik";
+	  public static final String NAZWA_TABELI = "articles";
 	 
 	  //Nazwa kolumn
 	  public static final String NAZWA_KOLUMNY_ID = "id";

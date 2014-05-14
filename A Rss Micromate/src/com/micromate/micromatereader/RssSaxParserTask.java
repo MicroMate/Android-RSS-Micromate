@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>> {
 
-	ArticlesListAdapter articleListAdapter;
+	//ArticlesListAdapter articleListAdapter;
 	DBoperacje baza;
 	List<Article> articles;
 	RssSaxHandler rssSaxHandler;
@@ -29,12 +29,12 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 	
 	//Konstruktor
 	public RssSaxParserTask( 
-			ArticlesListAdapter articleListAdapter, 
+			//ArticlesListAdapter articleListAdapter, 
 			DBoperacje baza,
 			MyDialogFragment dialogPobierz,
 			FragmentActivity activity) {
 	
-		this.articleListAdapter = articleListAdapter;
+		//this.articleListAdapter = articleListAdapter;
 		this.baza = baza;
 		this.dialogPobierz = dialogPobierz;
 		this.activity = activity;
@@ -106,7 +106,7 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 	    }
 		
 		aktualizacjaBazy(articles);	
-		aktualizacjaAdaptera(); //czyli listy
+		// aktualizacjaAdaptera(); //czyli listy
 
 		
 	}
@@ -149,6 +149,7 @@ private void aktualizacjaBazy(List<Article> articles) {
 	    
 }
 
+/*
 private void aktualizacjaAdaptera() {
 		  		    
 	//Dla wlasnego adaptera - aktualizacja listy
@@ -156,7 +157,7 @@ private void aktualizacjaAdaptera() {
 	articleListAdapter.addAll(baza.getAllData());
 	articleListAdapter.notifyDataSetChanged();
 }
-
+*/
 
 }
 
