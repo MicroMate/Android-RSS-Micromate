@@ -16,11 +16,12 @@ import org.xml.sax.XMLReader;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>> {
 
-	//ArticlesListAdapter articleListAdapter;
+	ArrayAdapter<String> categoryListAdapter;
 	DBoperacje baza;
 	List<Article> articles;
 	RssSaxHandler rssSaxHandler;
@@ -29,12 +30,12 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 	
 	//Konstruktor
 	public RssSaxParserTask( 
-			//ArticlesListAdapter articleListAdapter, 
+			ArrayAdapter<String> categoryListAdapter, 
 			DBoperacje baza,
 			MyDialogFragment dialogPobierz,
 			FragmentActivity activity) {
 	
-		//this.articleListAdapter = articleListAdapter;
+		this.categoryListAdapter = categoryListAdapter;
 		this.baza = baza;
 		this.dialogPobierz = dialogPobierz;
 		this.activity = activity;
@@ -106,7 +107,8 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 	    }
 		
 		aktualizacjaBazy(articles);	
-		// aktualizacjaAdaptera(); //czyli listy
+		
+		aktualizacjaListCategory();
 
 		
 	}
@@ -114,8 +116,8 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 
 
 
-private List<Article> parseXml(String strUrl) throws ParserConfigurationException,SAXException,IOException {
-//private List<Article> parseXml(String strUrl) throws Exception {
+	private List<Article> parseXml(String strUrl) throws ParserConfigurationException,SAXException,IOException {
+	//private List<Article> parseXml(String strUrl) throws Exception {
 	  
         URL xmlUrl = new URL(strUrl);
 	        
@@ -130,34 +132,36 @@ private List<Article> parseXml(String strUrl) throws ParserConfigurationExceptio
         reader.parse(inputSource);
 	        
         return rssSaxHandler.getArticles(); 
-}
+	}
 
 
 
-//private void aktualizacjaBazy() {
-private void aktualizacjaBazy(List<Article> articles) {
+	//private void aktualizacjaBazy() {
+	private void aktualizacjaBazy(List<Article> articles) {
 	 
-	baza.deleteAll();
+		baza.deleteAll();
 	
-	for (Article article : articles)
-		baza.addToDatabase(new Article(
+		for (Article article : articles)
+			baza.addToDatabase(new Article(
 				article.getTitle(),
 				article.getDescription(), 
 				article.getUrl(), 
 				article.getPubDate(), 
 				article.getCategory()));
 	    
-}
+	}
 
-/*
-private void aktualizacjaAdaptera() {
-		  		    
-	//Dla wlasnego adaptera - aktualizacja listy
-	articleListAdapter.clear();
-	articleListAdapter.addAll(baza.getAllData());
-	articleListAdapter.notifyDataSetChanged();
-}
-*/
+	
+	private void aktualizacjaListCategory(){
+	
+		categoryListAdapter.clear();
+		//podczas dodawania metoda addAll nie trzeba konwertowaç typu Set do List, argument metody jest typu Collection 
+		categoryListAdapter.addAll(baza.getCategoryColumn()); 
+		categoryListAdapter.add("All"); //adding all categories to the list
+	
+		categoryListAdapter.notifyDataSetChanged();
+	
+	}
 
 }
 

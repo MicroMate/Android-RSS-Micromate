@@ -19,8 +19,8 @@ import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity {
 	
-	private ListView listView;
-	private ArrayAdapter<String> adapter_listy;
+	private ListView categoryListView; //lista kategorii artyku¸—w bloga
+	private ArrayAdapter<String> categoryListAdapter;
 	private DBoperacje baza;
 	private List<String> categories;
 	private Button uaktualnijBazeButton;
@@ -32,7 +32,7 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		listView = (ListView)findViewById(R.id.categoryList);
+		categoryListView = (ListView)findViewById(R.id.categoryList);
 		uaktualnijBazeButton = (Button)findViewById(R.id.button1);
 		
 		dialogPobierz = new MyDialogFragment();
@@ -44,11 +44,11 @@ public class MainActivity extends FragmentActivity {
 		categories = new ArrayList<String>(baza.getCategoryColumn()); 
 		categories.add("All"); //adding all categories to the list
 		
-		adapter_listy = new ArrayAdapter<String>(this, R.layout.category_list_item, categories);
-		listView.setAdapter(adapter_listy);		
+		categoryListAdapter = new ArrayAdapter<String>(this, R.layout.category_list_item, categories);
+		categoryListView.setAdapter(categoryListAdapter);		
 		
 		// listening to single list item on click
-        listView.setOnItemClickListener(new OnItemClickListener() {
+        categoryListView.setOnItemClickListener(new OnItemClickListener() {
           public void onItemClick(AdapterView<?> parent, View view,
               int position, long id) {
                
@@ -73,7 +73,7 @@ public class MainActivity extends FragmentActivity {
 							
 				String url = "http://www.micromate.bl.ee/?feed=rss2";
 				
-				rssSaxParserTask = new RssSaxParserTask(baza, dialogPobierz, MainActivity.this);
+				rssSaxParserTask = new RssSaxParserTask(categoryListAdapter,baza, dialogPobierz, MainActivity.this);
 				rssSaxParserTask.execute(url,url,url,url,url,url,url,url,url,url); //jest 10, wiec po 10%	
 			}
 		});
