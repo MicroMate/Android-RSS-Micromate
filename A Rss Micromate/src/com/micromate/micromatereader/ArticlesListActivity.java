@@ -29,7 +29,7 @@ public class ArticlesListActivity extends FragmentActivity {
 		setContentView(R.layout.activity_articles_list);
 		
 		listView = (ListView)findViewById(R.id.listView1);
-		categoryTextView = (TextView)findViewById(R.id.textView1); 
+		categoryTextView = (TextView)findViewById(R.id.categoryTextView); 
 		
 		articles = new ArrayList<Article>();
 		baza = new DBoperacje(this);   //BAZA DANYCH
@@ -56,10 +56,9 @@ public class ArticlesListActivity extends FragmentActivity {
 		        	
 		            Intent myIntent = new Intent(getApplicationContext(), ArticleActivity.class);
 		            
-		            //myIntent.putExtra("feedTitle", myRSSHandler.getChannelTitle());
-		            myIntent.putExtra("articleTitle",articles.get(pos).getTitle());
 		            myIntent.putExtra("articleCategory",articles.get(pos).getCategory());
-		            //myIntent.putExtra("articleUrl", RSSHandler.articles.get(pos).getUrl().toString());
+		            myIntent.putExtra("articleTitle",articles.get(pos).getTitle());
+		            myIntent.putExtra("articleDescription", articles.get(pos).getDescription());
 		            myIntent.putExtra("articleUrl", articles.get(pos).getUrl());
 		            
 		            startActivity(myIntent);

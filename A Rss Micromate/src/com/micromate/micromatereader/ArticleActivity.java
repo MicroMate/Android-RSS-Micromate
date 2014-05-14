@@ -17,16 +17,16 @@ public class ArticleActivity extends Activity {
 		setContentView(R.layout.activity_article);
 		
 		
-		TextView feedTitle = (TextView)findViewById(R.id.textView1);
-		TextView articleTitle = (TextView)findViewById(R.id.textView2);
-		TextView articleContent = (TextView)findViewById(R.id.textView3);
-		Button btnArticleUrl = (Button)findViewById(R.id.button1);
+		TextView categoryView = (TextView)findViewById(R.id.textView1);
+		TextView titleView = (TextView)findViewById(R.id.textView2);
+		TextView descriptionView = (TextView)findViewById(R.id.textView3);
+		Button btnArticleUrl = (Button)findViewById(R.id.visit_site);
 		
 		
 		final Intent intent = getIntent();
-		feedTitle.setText(intent.getStringExtra("feedTitle"));
-		articleTitle.setText(intent.getStringExtra("articleTitle"));
-		articleContent.setText(intent.getStringExtra("articleCategory"));
+		categoryView.setText(intent.getStringExtra("articleCategory"));
+		titleView.setText(intent.getStringExtra("articleTitle"));
+		descriptionView.setText(intent.getStringExtra("articleDescription"));
 			
 		
 		btnArticleUrl.setOnClickListener(new OnClickListener() {

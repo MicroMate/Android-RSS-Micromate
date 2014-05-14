@@ -5,39 +5,57 @@
     android:background="@drawable/micromate_background"
     tools:context=".ArticleActivity" >
 
-    <TextView
-        android:id="@+id/textView2"
+     <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="18dp"
-        android:text="TextView" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="TextView" />
+        android:scaleType="fitXY"
+        android:src="@drawable/rss_reader_banner" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView2"
-        android:layout_marginTop="14dp"
-        android:text="TextView" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+         android:textColor="#DEEEEE"
+        android:textSize="18sp" 
+        android:text="@string/description_text_view" />
 
-    <Button
-        android:id="@+id/button1"
+    <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="Button" />
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textColor="#F26522"
+        android:textSize="21sp" 
+        android:text="@string/title_text_view" />
+
+     <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="@string/category_text_view"
+        android:textColor="#BBBBBB"
+        android:textSize="21sp" 
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+     <Button
+         android:id="@+id/visit_site"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentRight="true"
+         android:text="@string/url_button" />
 
 </RelativeLayout>

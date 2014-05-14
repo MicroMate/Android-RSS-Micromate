@@ -6,7 +6,16 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_articles_list">ArticlesListActivity</string>
 
+    <!-- Main Layout Layout -->
     <string name="update_articles">Update Articles</string>
+    
+    <!-- Articles List Layout -->
     <string name="category_text_view">Category</string>
+    
+    <!-- Article Layout -->
+    <string name="title_text_view">Article Title</string>
+    <string name="description_text_view">Article Description</string>
+    <string name="url_button">Visit Site</string>
+    
     
 </resources>
