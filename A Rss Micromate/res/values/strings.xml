@@ -8,6 +8,7 @@
 
     <!-- Main Layout Layout -->
     <string name="update_articles">Update Articles</string>
+    <string name="new_article">0</string>
     
     <!-- Articles List Layout -->
     <string name="category_text_view">Category</string>

@@ -38,7 +38,7 @@ public class ArticlesListAdapter extends ArrayAdapter<Article>{
 
 	    // 4. Set the text for textView 
 	    labelView.setText(articles.get(position).getTitle());
-	    valueView.setText(articles.get(position).getDate());
+	    valueView.setText(articles.get(position).getListDate());
 
 	    // 5. retrn rowView
 	    return rowView;

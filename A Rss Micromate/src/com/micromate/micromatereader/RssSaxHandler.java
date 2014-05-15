@@ -22,8 +22,22 @@ public class RssSaxHandler extends DefaultHandler {
 	
 	private boolean currentElement = false; //pomiedzy znacznikami moga byc znaki dlatego trzeba stosowac flage
 	
+	private DBoperacje baza;
+	private String latestArticleDate ="0000-00-00 00:00:00";
+	private List<String> newArticles;
+	
+	
+	/*Constructor*/
+	public RssSaxHandler(DBoperacje baza){
+		this.baza = baza;
+	}
+	
 	public List<Article> getArticles() {
 		return articles;
+	}
+	
+	public List<String> getNewArticles() {
+		return newArticles;
 	}
 	
 	/**/
@@ -34,6 +48,8 @@ public class RssSaxHandler extends DefaultHandler {
 		
 		builderText = new StringBuilder();
 		//articles = new ArrayList<Article>();
+		latestArticleDate = baza.getLatestArticleDate();
+		newArticles = new ArrayList<String>();
 		
 		Log.d("Micromate Reader", "startDOCUMENT");
 	}
@@ -96,6 +112,13 @@ public class RssSaxHandler extends DefaultHandler {
 				article.setCategory(builderText.toString());
 		
 			else if(localName.equalsIgnoreCase("item")) {  //
+				
+			//if new article add name of category to the list
+			 if (latestArticleDate.compareTo(article.getDate()) < 0) { 
+					newArticles.add(article.getCategory());
+					Log.d("Micromate Reader", "NOWY ARTYKUü !!!");
+				}
+				
 				articles.add(article);
 				inItem = false;
 			}	
@@ -103,8 +126,6 @@ public class RssSaxHandler extends DefaultHandler {
 		
 		builderText.setLength(0); 
 	} 
-	
-	
 	
 	
 }

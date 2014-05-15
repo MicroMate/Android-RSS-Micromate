@@ -16,26 +16,28 @@ import org.xml.sax.XMLReader;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>> {
 
-	ArrayAdapter<String> categoryListAdapter;
-	DBoperacje baza;
-	List<Article> articles;
-	RssSaxHandler rssSaxHandler;
-	MyDialogFragment dialogPobierz;
-	FragmentActivity activity; //context
+	private CategoryListAdapter categoryListAdapter;
+	private List<Category> categories;
+	private DBoperacje baza;
+	private List<Article> articles;
+	private RssSaxHandler rssSaxHandler;
+	private MyDialogFragment dialogPobierz;
+	private FragmentActivity activity; //context
 	
 	//Konstruktor
 	public RssSaxParserTask( 
-			ArrayAdapter<String> categoryListAdapter, 
+			CategoryListAdapter categoryListAdapter, 
+			List<Category> categories,
 			DBoperacje baza,
 			MyDialogFragment dialogPobierz,
 			FragmentActivity activity) {
 	
 		this.categoryListAdapter = categoryListAdapter;
+		this.categories = categories;
 		this.baza = baza;
 		this.dialogPobierz = dialogPobierz;
 		this.activity = activity;
@@ -95,7 +97,11 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 	@Override
 	protected void onPostExecute(List<Article> articles) {
 
-		dialogPobierz.dismiss();
+		try{
+			dialogPobierz.dismiss();
+		}catch(Exception e){
+			Log.d("RssSaxParserTask", "BLAD ZAMYKANIA DIALOGU: "+e);
+		}
 		
 		if (articles.isEmpty()) {
 			 Log.d("SAX XML ARTICLES", "ARTICLES ARE EMPTY !!!");
@@ -125,7 +131,7 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
         SAXParser parser = saxFactory.newSAXParser();
         XMLReader reader = parser.getXMLReader();
 	        
-        rssSaxHandler = new RssSaxHandler();
+        rssSaxHandler = new RssSaxHandler(baza);
         reader.setContentHandler(rssSaxHandler);
 	       
         InputSource inputSource = new InputSource(xmlUrl.openStream());
@@ -146,7 +152,7 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 				article.getTitle(),
 				article.getDescription(), 
 				article.getUrl(), 
-				article.getPubDate(), 
+				article.getDate(), 
 				article.getCategory()));
 	    
 	}
@@ -155,9 +161,30 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 	private void aktualizacjaListCategory(){
 	
 		categoryListAdapter.clear();
+		//tak bylo dla zwyklego adaptera
 		//podczas dodawania metoda addAll nie trzeba konwertowaç typu Set do List, argument metody jest typu Collection 
-		categoryListAdapter.addAll(baza.getCategoryColumn()); 
-		categoryListAdapter.add("All"); //adding all categories to the list
+		//categoryListAdapter.addAll(baza.getCategoryColumn()); 
+		//categoryListAdapter.add("All"); //adding all categories to the list
+		
+		List<String> categoryNames = new ArrayList<String>(baza.getCategoryColumn());  
+		categoryNames.add("All"); //adding all categories to the list
+		
+		categories.clear();
+		
+		for (String s: categoryNames){
+			categories.add(new Category( s, 0));
+		}
+		
+		//if new articles adding quantity number of new articles to list 
+		for (String s: rssSaxHandler.getNewArticles()) {
+			for (Category c: categories) {
+				if (s.equals(c.getName()))			
+					c.incrementNewArticle();
+				if (c.getName().equals("All")) 
+					c.incrementNewArticle(); //increment All category
+			}
+			
+		}
 	
 		categoryListAdapter.notifyDataSetChanged();
 	

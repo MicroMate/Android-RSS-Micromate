@@ -15,14 +15,14 @@ public class Article {
 	private String description ="title";
 	//private URL url;
 	private String url;
-	private String pubDate;
+	private String date;
 	private String category;
 	
-	public Article(String title, String description, String url, String pupDate, String category) {
+	public Article(String title, String description, String url, String date, String category) {
 		this.title = title;
 		this.description = description;
 		this.url = url;
-		this.pubDate = pupDate;
+		this.date = date;
 		this.category = category;
 	}
 	
@@ -63,12 +63,33 @@ public class Article {
 		this.url = url;
 	}
 
-	public String getPubDate() {
-		return pubDate;
+	public String getDate() {
+		return date;
+	}
+	
+	public void setDate(String date){
+		this.date = date;
 	}
 
 	public void setPubDate(String pubDate) {
-		this.pubDate = pubDate;
+		//wzor daty z pliku xml
+		SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ",Locale.UK);
+		//moj wzor daty
+		SimpleDateFormat mojformater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.UK);
+		
+		Date date = null;
+	    String strDate = "0000-00-00 00:00:00";
+		try {
+			date = formatter.parse(pubDate);
+			strDate =  mojformater.format(date);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Log.w("ArticleDateParser",
+				    "Wystˆpi¸ problem z konwersjˆ pubDate: " + e.toString());
+		}	  
+		
+		this.date = strDate;
 	}
 	
 	public String getCategory() {
@@ -79,28 +100,48 @@ public class Article {
 		this.category = category;
 	}
 
-	//Formatowanie Daty i Godziny
-	public String getDate() {
+	
+	//W¸asny Format Daty i Godziny, dla wyswietlania na liscie
+	public String getListDate() {
 		//wzor daty z pliku xml
-		SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ",Locale.UK);
+		//SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ",Locale.UK);
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.UK);
 		//moj wzor daty
 		SimpleDateFormat mojformater = new SimpleDateFormat("dd-MM-yy   HH:mm:ss",Locale.UK);
 	    
 		Date date = null;
-	    String strDate = "Date";
-		  try {
-			date = formatter.parse(pubDate);
+	    String strDate = "0000-00-00 00:00:00";
+		try {
+			date = formatter.parse(this.date);
 			strDate =  mojformater.format(date);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Log.w("ArticleDateParser",
-				    "Wystˆpi¸ problem z konwersjˆ pubDate: " + e.toString());
+				    "Wystˆpi¸ problem z konwersjˆ daty: " + e.toString());
 		}	  
 		
 		return strDate;
 	}
 	
-	
-	
+	/*
+	//Konwertowanie daty do typu Date
+	public Date getDateDate() {
+		
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.UK);
+		Date date = null;
+	    
+		try {
+			date = formatter.parse(this.date);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Log.w("ArticleDateParser",
+				    "Wystˆpi¸ problem z konwersjˆ daty: " + e.toString());
+		}	  
+		
+		return date;
+	}
+	*/
+
 }

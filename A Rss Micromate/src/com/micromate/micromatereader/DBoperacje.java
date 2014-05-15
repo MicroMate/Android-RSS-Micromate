@@ -44,7 +44,7 @@ public class DBoperacje {
         values.put(DBopenHelper.NAZWA_KOLUMNY_TITLE, article.getTitle());
         values.put(DBopenHelper.NAZWA_KOLUMNY_DESCRIPTION, article.getDescription()); 
         values.put(DBopenHelper.NAZWA_KOLUMNY_URL, article.getUrl()); 
-        values.put(DBopenHelper.NAZWA_KOLUMNY_PUBDATE, article.getPubDate()); 
+        values.put(DBopenHelper.NAZWA_KOLUMNY_PUBDATE, article.getDate()); 
         values.put(DBopenHelper.NAZWA_KOLUMNY_CATEGORY, article.getCategory()); 
         
         // Inserting Row
@@ -77,7 +77,7 @@ public class DBoperacje {
                 wynik.setTitle(kursor.getString(1));
                 wynik.setDescription(kursor.getString(2));
                 wynik.setUrl(kursor.getString(3));
-                wynik.setPubDate(kursor.getString(4));
+                wynik.setDate(kursor.getString(4));
                 wynik.setCategory(kursor.getString(5));
                 
                 //licznik (nr pozycji na liscie - mozna dodac do ziarna)
@@ -113,7 +113,7 @@ public class DBoperacje {
                 wynik.setTitle(kursor.getString(1));
                 wynik.setDescription(kursor.getString(2));
                 wynik.setUrl(kursor.getString(3));
-                wynik.setPubDate(kursor.getString(4));
+                wynik.setDate(kursor.getString(4));
                 wynik.setCategory(kursor.getString(5));
                 
                 //licznik (nr pozycji na liscie - mozna dodac do ziarna)
@@ -159,6 +159,26 @@ public class DBoperacje {
         return lista;
     }
     
+    
+    // Getting Latest date of article
+    public String getLatestArticleDate() {
+          
+    	String latestDate = "0000-00-00 00:00:00";
+        // Select All Query      
+        String selectQuery = "SELECT pubDate FROM " + DBopenHelper.NAZWA_TABELI+" ORDER BY pubDate desc LIMIT 1";
+        Cursor kursor = db.rawQuery(selectQuery, null);
+		
+        // looping through all rows and adding to list
+        if (kursor.moveToFirst()) {
+           	             
+            latestDate = kursor.getString(0);
+                
+        }
+ 
+        kursor.close();
+        // return contact list
+        return latestDate;
+    }
     
     
     /* Usuwanie poprawic

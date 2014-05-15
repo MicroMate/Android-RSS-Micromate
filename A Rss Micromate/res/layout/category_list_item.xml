@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/category_text"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="20dp"
-    android:textSize="20sp"
-    android:gravity="center_horizontal" 
-    android:textColor="#F26522">
-</TextView>
+    <TextView
+        android:id="@+id/category_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="20dp"
+        android:text="@string/category_text_view"
+        android:textColor="#F26522"
+        android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/newArticleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_article"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>
