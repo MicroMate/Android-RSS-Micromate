@@ -27,6 +27,7 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 	private RssSaxHandler rssSaxHandler;
 	private MyDialogFragment dialogPobierz;
 	private FragmentActivity activity; //context
+	private int exceptionNr = 0;
 	
 	//Konstruktor
 	public RssSaxParserTask( 
@@ -56,31 +57,37 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 	protected List<Article> doInBackground(String... urls) {
   
 		articles = new ArrayList<Article>(); 
-		
-		//to jest dla manifestu w metoda onPostExecute - sprawdzam czy zosta∏y pobrane dane
-		//z null tez dzial ale ∏atwiej i w∏asciwie uzyc metode isEmty()
-		//articles = null;               //LISTA DOMYSLNIE NIE JEST null jest PUSTA, znajdujace sie w niej elemnty sa null
  
 		for (int i = 0; i < urls.length; i++) { //Petla dla progresu w dialogu
 			try {
 				
 				articles = parseXml(urls[0]); 
 				
-				publishProgress((int) (((i+1) / (float) urls.length) * 100));  //aktualizowanie pasku postepu 
+				publishProgress((int) (((i+1) / (float) urls.length) * 100));//update progress bar
       
-	  
+			//hendles the type of exceptios
+			} catch (NoNewArticlesException nae){
+				Log.e("RssSaxParserTask", "No New Article");
+				exceptionNr = 1;
+				
 			} catch (ParserConfigurationException pce){
-				Log.e("SAX XML", "sax parse error", pce);
+				Log.e("RssSaxParserTask", "sax parse error", pce);
+				exceptionNr = 2;
 				
 			} catch (SAXException se){
-				Log.e("SAX XML", "sax error", se);
+				Log.e("RssSaxParserTask", "sax error", se);
+				exceptionNr = 3;
 			
 			} catch (IOException e) {
-				Log.e("SAX XML", "Exception", e);
+				Log.e("RssSaxParserTask", "IOException", e);
+				exceptionNr = 4;
 			}
+		
 		}
   
+		Log.d("RssSaxParserTask", "size of return articles list: "+articles.size());
 		return articles;
+		
 	}
 
 	//Wywo∏anie metody publishProgress - prowadzi do wywolania metody onProgressUpdate
@@ -92,37 +99,60 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 
 
 
-	//Metoda ta s∏uzy do aktualizowania elemntów interfejsu uzytkowanika, 
-	//dlatego nalezy wyswietlic wynik za pomoca adaptera widoku ListView.
+	//aktualizacja elemntów interfejsu uzytkowanika, 
 	@Override
-	protected void onPostExecute(List<Article> articles) {
+	protected void onPostExecute(List<Article> list) {
 
+		Log.d("RssSaxParserTask", "RETURN ARTICLES2 rozmiar listy: "+rssSaxHandler.getArticles().size());
+		articles = rssSaxHandler.getArticles();
+		
 		try{
 			dialogPobierz.dismiss();
 		}catch(Exception e){
 			Log.d("RssSaxParserTask", "BLAD ZAMYKANIA DIALOGU: "+e);
 		}
 		
-		if (articles.isEmpty()) {
-			 Log.d("SAX XML ARTICLES", "ARTICLES ARE EMPTY !!!");
+		//display toast with the type of exception
+		if (exceptionNr != 0) {	
+			switch(exceptionNr){
+			case 1:
+				if (articles.isEmpty())
+					Toast.makeText(activity,        
+						"No new articles.", Toast.LENGTH_SHORT).show();
+				else 
+					Toast.makeText(activity,        
+						articles.size()+" new article", Toast.LENGTH_SHORT).show();	
+			 	break;
+			case 2:
+				Toast.makeText(activity,                   
+						"Sax parser error.", Toast.LENGTH_SHORT).show();
+				break;
+			case 3:
+				Toast.makeText(activity,                   
+						"Sax error.", Toast.LENGTH_SHORT).show();
+				break;
+			case 4:
+				Toast.makeText(activity,                   
+						"IOException, Network issue.", Toast.LENGTH_SHORT).show();
+				break;
+			}
+			
 	       
-	         //Toast.makeText(getApplicationContext(),    // w MainActivity
-			 Toast.makeText(activity,                     // gdy pobierane activity (kontekst) w konstrukotrze
-	         	 "Plik rss nie móg∏ zostaç przeczytany.", Toast.LENGTH_SHORT).show();
-	         return;
 	    }
 		
-		aktualizacjaBazy(articles);	
 		
-		aktualizacjaListCategory();
-
+		if (!articles.isEmpty()) {	
+			aktualizacjaBazy(articles);	
+			aktualizacjaListCategory();
+		}
 		
 	}
 
 
 
 
-	private List<Article> parseXml(String strUrl) throws ParserConfigurationException,SAXException,IOException {
+	private List<Article> parseXml(String strUrl) throws 
+		 ParserConfigurationException,SAXException,IOException {
 	//private List<Article> parseXml(String strUrl) throws Exception {
 	  
         URL xmlUrl = new URL(strUrl);
@@ -145,7 +175,8 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 	//private void aktualizacjaBazy() {
 	private void aktualizacjaBazy(List<Article> articles) {
 	 
-		baza.deleteAll();
+		//po zmianach - dodawanie tylko nowego artykulów bez kasowania danych w bazie
+		//baza.deleteAll(); 
 	
 		for (Article article : articles)
 			baza.addToDatabase(new Article(
@@ -161,13 +192,13 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 	private void aktualizacjaListCategory(){
 	
 		categoryListAdapter.clear();
-		//tak bylo dla zwyklego adaptera
-		//podczas dodawania metoda addAll nie trzeba konwertowaç typu Set do List, argument metody jest typu Collection 
+		//tak bylo dla standardowego adaptera dla jedego wiersza
+		//urzywajac metody addAll nie trzeba konwertowaç typu Set do List, argument metody jest typu Collection 
 		//categoryListAdapter.addAll(baza.getCategoryColumn()); 
 		//categoryListAdapter.add("All"); //adding all categories to the list
 		
 		List<String> categoryNames = new ArrayList<String>(baza.getCategoryColumn());  
-		categoryNames.add("All"); //adding all categories to the list
+		categoryNames.add("All"); //adding All row to the list for display all articles
 		
 		categories.clear();
 		
@@ -190,5 +221,7 @@ public class RssSaxParserTask extends AsyncTask <String, Integer, List<Article>>
 	
 	}
 
+	
+	
 }
 

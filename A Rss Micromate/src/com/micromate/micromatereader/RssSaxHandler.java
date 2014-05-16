@@ -51,7 +51,7 @@ public class RssSaxHandler extends DefaultHandler {
 		latestArticleDate = baza.getLatestArticleDate();
 		newArticles = new ArrayList<String>();
 		
-		Log.d("Micromate Reader", "startDOCUMENT");
+		Log.d("RssSaxHandler", "startDOCUMENT");
 	}
 	
 	
@@ -66,7 +66,7 @@ public class RssSaxHandler extends DefaultHandler {
 		 if(localName.equalsIgnoreCase("item")) { 
 			 	inItem = true;						//
 	            article = new Article();			//
-	            Log.d("Micromate Reader", "startElement - inItem");
+	            Log.d("RssSaxHandler", "startElement - if in Item");
 	     }
 	}
 
@@ -81,7 +81,7 @@ public class RssSaxHandler extends DefaultHandler {
 		//if (inItem == true)
 		if(currentElement) {
 			builderText.append(ch, start, length);     //
-        	Log.d("Micromate Reader", "characters - cuurentElemnet");
+        	//Log.d("RssSaxHandler", "characters - if currentElemnet");
 		}
 	}
 
@@ -100,7 +100,7 @@ public class RssSaxHandler extends DefaultHandler {
 	       
 			if(localName.equalsIgnoreCase("title")) {
 				article.setTitle(builderText.toString().trim());
-				Log.d("Micromate Reader", "endElement - TITLE");
+				Log.d("RssSaxHandler", "endElement - if TITLE");
 			}	
 			else if(localName.equalsIgnoreCase("link"))
 				article.setUrl(builderText.toString().trim());
@@ -114,13 +114,17 @@ public class RssSaxHandler extends DefaultHandler {
 			else if(localName.equalsIgnoreCase("item")) {  //
 				
 			//if new article add name of category to the list
-			 if (latestArticleDate.compareTo(article.getDate()) < 0) { 
-					newArticles.add(article.getCategory());
-					Log.d("Micromate Reader", "NOWY ARTYKUü !!!");
-				}
-				
+			if (latestArticleDate.compareTo(article.getDate()) < 0) { 
+				newArticles.add(article.getCategory());				
+				Log.d("RssSaxHandler", "DODANIE DO LISTY NOWEGO ARTYKUüU");
 				articles.add(article);
 				inItem = false;
+			}
+			else
+				throw new NoNewArticlesException();
+				//throw new SAXException();
+			
+			
 			}	
 		}
 		
@@ -129,3 +133,6 @@ public class RssSaxHandler extends DefaultHandler {
 	
 	
 }
+
+//Own Exception
+class NoNewArticlesException extends SAXException {}
